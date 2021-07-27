@@ -1,0 +1,2 @@
+# MobileAppE2ETest
+AndroidアプリのE2EテストをAppiumで実装し、CIで自動テストを実行できるようにしたPJ
