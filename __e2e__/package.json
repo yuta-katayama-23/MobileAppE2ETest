@@ -1,0 +1,19 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "doctor": "appium-doctor"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "appium": "^1.21.0",
+    "appium-doctor": "^1.16.0"
+  },
+  "dependencies": {
+    "wd": "^1.14.0"
+  }
+}
