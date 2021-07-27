@@ -70,3 +70,15 @@ info AppiumDoctor  ✔ adb, android, emulator exist: C:\Users\user\AppData\Local
 info AppiumDoctor  ✔ 'bin' subfolder exists under 'C:\Program Files\AdoptOpenJDK\jdk-11.0.11.9-hotspot\'
 info AppiumDoctor ### Diagnostic for necessary dependencies completed, no fix needed. ###
 ```
+
+# シンプルなやり方で E2E テストを実装してみる
+
+webdriverio を用いて appium client から appium server へ接続する部分を実装<br>
+https://appium.io/docs/en/about-appium/getting-started/index.html#running-your-first-test<br>
+`HappyBirthday/__e2e__/index.js`
+
+## capabilities
+
+以下を見ると分かる<br>
+今回の`index.js`の各キーの値は以下を参考にしている<br>
+https://appium.io/docs/en/writing-running-appium/caps/index.html

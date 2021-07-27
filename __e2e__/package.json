@@ -4,16 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "doctor": "appium-doctor"
+    "doctor": "appium-doctor",
+    "test": "node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "appium": "^1.21.0",
-    "appium-doctor": "^1.16.0"
-  },
   "dependencies": {
-    "wd": "^1.14.0"
+    "appium": "^1.21.0",
+    "webdriverio": "^7.8.0"
+  },
+  "devDependencies": {
+    "appium-doctor": "^1.16.0"
   }
 }
