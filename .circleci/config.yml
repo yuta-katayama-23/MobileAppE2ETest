@@ -21,7 +21,7 @@ jobs:
           command: |
             pwd
             ls -al
-            chmod +x ./gradlew :app:assembleDebug
+            chmod +x (./gradlew assembleDebug)
 
       - run:
           name: install for e2e test
