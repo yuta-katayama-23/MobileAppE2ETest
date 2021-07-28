@@ -14,9 +14,9 @@ jobs:
       - checkout
       - install-package
       - check-env
-      - build
       - create-avd
       - start-emulator
+      - build
       - wait-boot
       - run-appium
       - execute-test
@@ -57,15 +57,6 @@ commands:
             emulator -avd test -delay-adb -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           background: true
 
-  run-appium:
-    steps:
-      - run:
-          name: Appium Server の起動
-          command: |
-            cd __e2e__
-            npm run s:appium
-          background: true
-
   build:
     steps:
       - run:
@@ -88,6 +79,15 @@ commands:
             adb shell settings put global window_animation_scale 0.0
             adb shell settings put global transition_animation_scale 0.0
             adb shell settings put global animator_duration_scale 0.0
+
+  run-appium:
+    steps:
+      - run:
+          name: Appium Server の起動
+          command: |
+            cd __e2e__
+            npm run s:appium
+          background: true
 
   execute-test:
     steps:
