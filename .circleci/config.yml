@@ -12,11 +12,13 @@ workflows:
     jobs:
       - welcome/run
       - test
+          requires:
+            - welcome/run
 
 jobs:
   test:
-    machine:
-      image: ubuntu-2004:202104-0
+    docker:
+      image: cimg/base:2021.04
     steps:
       - run:
           name: Hello World!
