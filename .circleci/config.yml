@@ -1,27 +1,29 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-# Use a package of configuration called an orb.
-orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
-# Orchestrate or schedule a set of jobs
-workflows:
-  # Name the workflow "welcome"
-  welcome:
-    # Run the welcome/run job in its own container
-    jobs:
-      - welcome/run
 
-      - test:
-          requires:
-            - welcome/run
+workflows:
+  moblie-e2e-test:
+    jobs:
+      - build-and-test
 
 jobs:
-  test:
-    docker:
-      - image: cimg/base:2021.04
+  build-and-test:
+    # https://circleci.com/docs/ja/2.0/android-machine-image/
+    machine:
+      image: android:202102-01
     steps:
+      - checkout
+
       - run:
-          name: Hello World!
+          name: build apk
           command: |
-            echo "Hello World!"
+            gradlew assembleDebug
+
+      - run:
+          name: install for e2e test
+          command: |
+            npm ci
+      
+      - run:
+          name: check environment for e2e test
+            command: |
+              npm run doctor
