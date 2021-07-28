@@ -94,3 +94,10 @@ https://appium.io/docs/en/about-appium/getting-started/index.html#running-your-f
 以下を見ると分かる<br>
 今回の`index.js`の各キーの値は以下を参考にしている<br>
 https://appium.io/docs/en/writing-running-appium/caps/index.html
+
+# CircleCi での E2E テスト
+
+## エミュレータ
+
+今どきは以下のような便利なものがあるのでそれに乗っかり AVD 作成・エミュレータ起動を実装<br>
+https://github.com/CircleCI-Public/android-image-preview-docs
