@@ -15,7 +15,6 @@ const opts = {
 
 async function main() {
     const client = await wdio.remote(opts);
-    debugger;
 
     const field = await client.$("//*[@resource-id=\"com.example.happybirthday:id/textView\"]");
     const value = await field.getText();

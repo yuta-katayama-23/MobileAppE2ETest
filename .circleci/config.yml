@@ -12,7 +12,7 @@ jobs:
       image: android:202102-01
     steps:
       - checkout
-      - build
+      # - build
       - install-package
       - check-env
       - create-avd
@@ -88,5 +88,6 @@ commands:
       - run:
           name: E2Eテスト実行
           command: |
+            sleep 10
             cd __e2e__
             npm run s:test
