@@ -22,16 +22,6 @@ jobs:
       - execute-test
 
 commands:
-  build:
-    steps:
-      - run:
-          name: apk の Build
-          # https://stackoverflow.com/questions/41700798/gradlew-command-not-found
-          # https://stackoverflow.com/questions/17668265/gradlew-permission-denied
-          command: |
-            chmod +x gradlew
-            ./gradlew assembleDebug
-
   install-package:
     steps:
       - run:
@@ -75,6 +65,16 @@ commands:
             cd __e2e__
             npm run s:appium
           background: true
+
+  build:
+    steps:
+      - run:
+          name: apk の Build
+          # https://stackoverflow.com/questions/41700798/gradlew-command-not-found
+          # https://stackoverflow.com/questions/17668265/gradlew-permission-denied
+          command: |
+            chmod +x gradlew
+            ./gradlew assembleDebug
 
   wait-boot:
     steps:
