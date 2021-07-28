@@ -19,9 +19,8 @@ jobs:
           # https://stackoverflow.com/questions/17668265/gradlew-permission-denied
           # https://circleci.com/docs/ja/2.0/language-android/#firebase-test-lab-%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9F%E3%83%86%E3%82%B9%E3%83%88
           command: |
-            pwd
-            ls -al
-            chmod +x (./gradlew assembleDebug)
+            chmod +x gradlew
+            ./gradlew assembleDebug
 
       - run:
           name: install for e2e test
