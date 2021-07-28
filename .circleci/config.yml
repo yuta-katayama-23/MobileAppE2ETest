@@ -19,8 +19,8 @@ jobs:
           # https://stackoverflow.com/questions/17668265/gradlew-permission-denied
           command: |
             pwd
-            cd HappyBirthday
-            chmod +x gradlew assembleDebug
+            ls -al
+            # chmod +x gradlew assembleDebug
 
       - run:
           name: install for e2e test
