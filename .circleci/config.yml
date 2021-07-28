@@ -12,22 +12,76 @@ jobs:
       image: android:202102-01
     steps:
       - checkout
+      - build
+      - install-package
+      - check-env
+      - create-avd
+      - run-emulator
+      - run-appium
+      - execute-test
 
+commands:
+  build:
+    steps:
       - run:
-          name: build apk
+          name: apk の Build
           # https://stackoverflow.com/questions/41700798/gradlew-command-not-found
           # https://stackoverflow.com/questions/17668265/gradlew-permission-denied
-          # https://circleci.com/docs/ja/2.0/language-android/#firebase-test-lab-%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9F%E3%83%86%E3%82%B9%E3%83%88
           command: |
-            chmod +x gradlew
-            ./gradlew assembleDebug
+            # 時間かかるので一旦コメントアウト
+            # chmod +x gradlew
+            # ./gradlew assembleDebug
 
-      - run:
-          name: install for e2e test
-          command: |
-            cd __e2e__
-            npm ci
+  install-package:
+    - run:
+        name: E2Eテストのために必要なパッケージをインストール
+        command: |
+          cd __e2e__
+          npm ci
 
-      - run:
-          name: check environment for e2e test
-          command: npm run doctor
+  check-env:
+    - run:
+        name: E2Eテスト実行環境のチェック
+        command: |
+          cd __e2e__
+          npm run doctor
+
+  # https://circleci.com/docs/ja/2.0/android-machine-image/#no-orb-example
+  create-avd:
+    - run:
+        name: AVD の作成
+        command: |
+          SYSTEM_IMAGES="system-images;android-28;default;x86"
+          sdkmanager "$SYSTEM_IMAGES"
+          echo "no" | avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
+
+  run-emulator:
+    - run:
+        name: エミュレーター起動
+        command: |
+          # 起動
+          emulator -avd test -delay-adb -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+
+          # エミュレーターの起動の待機
+          circle-android wait-for-boot
+
+          # エミュレーター アニメーションの無効化
+          adb shell settings put global window_animation_scale 0.0
+          adb shell settings put global transition_animation_scale 0.0
+          adb shell settings put global animator_duration_scale 0.0
+        background: true
+
+  run-appium:
+    - run:
+        name: Appium Server の起動
+        command: |
+          cd __e2e__
+          npm run s:appium
+        background: true
+
+  execute-test:
+    - run:
+        name: E2Eテスト実行
+        command: |
+          cd __e2e__
+          npm run s:test
