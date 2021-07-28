@@ -14,9 +14,9 @@ jobs:
       - checkout
       - install-package
       - check-env
+      - build
       - create-avd
       - start-emulator
-      - build
       - wait-boot
       - run-appium
       - execute-test
