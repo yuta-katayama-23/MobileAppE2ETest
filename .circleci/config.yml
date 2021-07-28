@@ -11,3 +11,13 @@ workflows:
     # Run the welcome/run job in its own container
     jobs:
       - welcome/run
+
+jobs:
+  test:
+    machine:
+      image: ubuntu-2004:202104-0
+    steps:
+      - run:
+          name: Hello World!
+          command: |
+            echo "Hello World!"
