@@ -5,16 +5,17 @@
   "main": "index.js",
   "scripts": {
     "doctor": "appium-doctor",
-    "test": "node index.js"
+    "s:avd": "emulator @Pixel_3_XL_API_28",
+    "s:appium": "appium",
+    "s:debug": "node inspect index.js",
+    "s:test": "node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "appium": "^1.21.0",
-    "webdriverio": "^7.8.0"
-  },
   "devDependencies": {
+    "appium": "^1.21.0",
+    "webdriverio": "^7.8.0",
     "appium-doctor": "^1.16.0"
   }
 }

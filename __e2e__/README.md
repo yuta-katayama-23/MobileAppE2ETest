@@ -71,6 +71,18 @@ info AppiumDoctor  ✔ 'bin' subfolder exists under 'C:\Program Files\AdoptOpenJ
 info AppiumDoctor ### Diagnostic for necessary dependencies completed, no fix needed. ###
 ```
 
+## emulator コマンドで AVD を起動できるようにする
+
+以下のコマンドで AVD の名前を確認してその名前で AVD をコマンドプロンプトから起動できる<br>
+※環境変数にパスが通っている事が前提
+
+```cmd
+C:\Users\user>emulator -list-avds
+Pixel_3_XL_API_28
+
+C:\Users\user>emulator @Pixel_3_XL_API_28
+```
+
 # シンプルなやり方で E2E テストを実装してみる
 
 webdriverio を用いて appium client から appium server へ接続する部分を実装<br>
