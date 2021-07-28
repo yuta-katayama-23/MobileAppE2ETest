@@ -28,9 +28,8 @@ commands:
           # https://stackoverflow.com/questions/41700798/gradlew-command-not-found
           # https://stackoverflow.com/questions/17668265/gradlew-permission-denied
           command: |
-            # 時間かかるので一旦コメントアウト
-            # chmod +x gradlew
-            # ./gradlew assembleDebug
+            chmod +x gradlew
+            ./gradlew assembleDebug
 
   install-package:
     - run:
