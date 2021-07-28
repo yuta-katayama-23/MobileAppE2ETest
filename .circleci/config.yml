@@ -15,15 +15,12 @@ jobs:
 
       - run:
           name: build apk
-          command: |
-            gradlew assembleDebug
+          command: gradlew assembleDebug
 
       - run:
           name: install for e2e test
-          command: |
-            npm ci
-      
+          command: npm ci
+
       - run:
           name: check environment for e2e test
-            command: |
-              npm run doctor
+          command: npm run doctor
