@@ -12,7 +12,7 @@ jobs:
       image: android:202102-01
     steps:
       - checkout
-      # - build
+      - build
       - install-package
       - check-env
       - create-avd
