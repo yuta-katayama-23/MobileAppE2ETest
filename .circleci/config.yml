@@ -18,6 +18,7 @@ jobs:
           # https://stackoverflow.com/questions/41700798/gradlew-command-not-found
           # https://stackoverflow.com/questions/17668265/gradlew-permission-denied
           command: |
+            pwd
             cd HappyBirthday
             chmod +x gradlew assembleDebug
 
