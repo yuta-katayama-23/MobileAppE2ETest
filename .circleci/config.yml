@@ -17,7 +17,7 @@ jobs:
           name: build apk
           # https://stackoverflow.com/questions/41700798/gradlew-command-not-found
           # https://stackoverflow.com/questions/17668265/gradlew-permission-denied
-          command: chmod +x ./gradlew assembleDebug
+          command: chmod +x gradlew assembleDebug
 
       - run:
           name: install for e2e test
