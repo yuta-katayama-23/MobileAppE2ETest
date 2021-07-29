@@ -26,12 +26,12 @@ jobs:
       #     chmod +x gradlew
       #     ./gradlew assembleDebug
 
-      - name: Check KVM acceleration and Install package for KVM
+      - name: Install package for KVM
+        run: sudo apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
+
+      - name: Check KVM acceleration
         run: |
           sudo apt-get install cpu-checker
-          sudo /usr/sbin/kvm-ok
-
-          sudo apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
 
           echo "↓↓↓ インストール後の結果 ↓↓↓"
           sudo /usr/sbin/kvm-ok
