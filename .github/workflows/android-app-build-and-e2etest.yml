@@ -30,3 +30,8 @@ jobs:
         run: |
           cd __e2e__
           npm run doctor
+
+      - name: Build apk
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
