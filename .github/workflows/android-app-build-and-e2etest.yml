@@ -2,62 +2,63 @@ name: android-app-build-and-e2etest
 
 on:
   push:
-    branches: [main]
+    branches: [happybirthday-app]
   workflow_dispatch:
 
 jobs:
   build-and-e2etest:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
 
-      # - name: Install node package from dependency
-      #   run: |
-      #     cd __e2e__
-      #     npm ci
-
-      # - name: Check environment by appium-doctor
-      #   run: |
-      #     cd __e2e__
-      #     npm run doctor
-
-      # - name: Build apk
-      #   run: |
-      #     chmod +x gradlew
-      #     ./gradlew assembleDebug
-
-      - name: Check that CPU supports hardware virtualization
-        run: egrep -c '（vmx | svm）' / proc / cpuinfo
-
-      - name: Install package for KVM and Add user for libvirt and kvm
+      - name: Install node package from dependency
         run: |
-          sudo apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
-          sudo adduser `id -un` libvirt
-          sudo adduser `id -un` kvm
-          virsh list --all
+          cd __e2e__
+          npm ci
 
-      # - name: Check KVM acceleration
-      #   run: |
-      #     sudo apt-get install cpu-checker
+      - name: Check environment by appium-doctor
+        run: |
+          cd __e2e__
+          npm run doctor
 
-      #     echo "↓↓↓ インストール後の結果 ↓↓↓"
-      #     sudo /usr/sbin/kvm-ok
-
-      - name: Accept android sdk license
-        run: yes | sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+      - name: Check VM acceleration
+        run: kextstat | grep intel
 
       - name: Create AVD
         run: |
           SYSTEM_IMAGES="system-images;android-28;default;x86"
-          sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "$SYSTEM_IMAGES"
-          echo "no" | sudo $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "$SYSTEM_IMAGES"
+          echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
 
       - name: Start android emulator
         # https://developer.android.com/studio/run/emulator-commandline
-        run: sudo $ANDROID_HOME/emulator/emulator -avd test -verbose -no-window -gpu auto -no-snapshot -noaudio -no-boot-anim
+        run: |
+          $ANDROID_HOME/emulator/emulator -avd test -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim &
 
-      # - name: Disable emulator animation
-      #   run: |
-      #     adb shell settings put global window_animation_scale 0.0
-      #     adb shell settings put global transition_animation_scale 0.0
-      #     adb shell settings put global animator_duration_scale 0.0
+      - name: Build apk
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Disable emulator animation
+        run: |
+          adb shell settings put global window_animation_scale 0.0
+          adb shell settings put global transition_animation_scale 0.0
+          adb shell settings put global animator_duration_scale 0.0
+
+      - name: Start appium server
+        run: |
+          cd __e2e__
+          npm run s:appium >> ~/appium.log &
+
+      - name: Execute e2e test
+        run: |
+          sleep 10
+          cd __e2e__
+          npm run s:test
+
+      - name: Archive appium server log
+        uses: actions/upload-artifact@v2
+        with:
+          name: appium-server-log
+          path: ~/appium.log
