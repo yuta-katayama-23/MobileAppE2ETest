@@ -1,0 +1,23 @@
+name: circleci-manual-start
+
+on:
+  workflow_dispatch:
+
+jobs:
+  manual-execute:
+    runs-on: ubuntu-latest
+    steps:
+      # https://circleci.com/docs/api/v2/#operation/triggerPipeline
+      - name: CircleCiのパイプラインを手動実行
+        run: |
+          JSON=$(cat << EOS
+          {
+            "branch": "main",
+          }
+          EOS)
+
+          curl https://circleci.com/api/v2/project/github/yuta-katayama-23/MobileAppE2ETest/pipeline \
+            --request POST \
+            --header "Circle-Token: ${{ secrets.CIRCLE_TOKEN }}"
+            --header "Content-Type: application/json" \
+            --data "${JSON}"
