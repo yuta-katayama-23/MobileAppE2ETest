@@ -22,13 +22,12 @@ jobs:
             --header "Content-Type: application/json" \
             --data "${JSON}" \
             | jq .message)
-          echo "$RESULT"
 
           if [[ $RESULT == "" ]]; then
             echo "OK"
             exit 0
           else
             echo "NG"
-            echo "$RESULT"
+            echo "Error Msg : $RESULT"
             exit 1
           fi
