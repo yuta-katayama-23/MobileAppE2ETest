@@ -28,30 +28,31 @@ jobs:
 
       - name: Install package for KVM and Add user for libvirt and kvm
         run: |
-          sudo apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
-          sudo adduser `id -un` libvirt
-          sudo adduser `id -un` kvm
-          virsh list --all
+          sudo apt-get install qemu-kvm libvirt-bin ubuntu-vm-builder bridge-utils ia32-libs-multiarch
+          # sudo apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
+          # sudo adduser `id -un` libvirt
+          # sudo adduser `id -un` kvm
+          # virsh list --all
 
-      - name: Check KVM acceleration
-        run: |
-          sudo apt-get install cpu-checker
-
-          echo "↓↓↓ インストール後の結果 ↓↓↓"
-          sudo /usr/sbin/kvm-ok
-
-      # - name: Accept android sdk license
-      #   run: yes | sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
-
-      # - name: Create AVD
+      # - name: Check KVM acceleration
       #   run: |
-      #     SYSTEM_IMAGES="system-images;android-28;default;x86"
-      #     sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "$SYSTEM_IMAGES"
-      #     echo "no" | sudo $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
+      #     sudo apt-get install cpu-checker
 
-      # - name: Start android emulator
-      #   # https://developer.android.com/studio/run/emulator-commandline
-      #   run: sudo $ANDROID_HOME/emulator/emulator -avd test -verbose -no-window -no-snapshot -noaudio -no-boot-anim
+      #     echo "↓↓↓ インストール後の結果 ↓↓↓"
+      #     sudo /usr/sbin/kvm-ok
+
+      - name: Accept android sdk license
+        run: yes | sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+
+      - name: Create AVD
+        run: |
+          SYSTEM_IMAGES="system-images;android-28;default;x86"
+          sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "$SYSTEM_IMAGES"
+          echo "no" | sudo $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
+
+      - name: Start android emulator
+        # https://developer.android.com/studio/run/emulator-commandline
+        run: sudo $ANDROID_HOME/emulator/emulator -avd test -verbose -no-window -no-snapshot -noaudio -no-boot-anim
 
       # - name: Disable emulator animation
       #   run: |
