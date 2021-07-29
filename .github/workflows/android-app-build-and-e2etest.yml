@@ -26,13 +26,14 @@ jobs:
       #     chmod +x gradlew
       #     ./gradlew assembleDebug
 
+      - name: Accept android sdk license
+        run: yes | sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+
       - name: Create AVD
         run: |
-          cd /usr/local/lib/android/sdk/cmdline-tools/latest
-          ls -al
           SYSTEM_IMAGES="system-images;android-28;default;x86"
           sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "$SYSTEM_IMAGES"
-          echo "no" | avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
+          echo "no" | sudo $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
 
       - name: Start android emulator
         run: emulator -avd test -delay-adb -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
