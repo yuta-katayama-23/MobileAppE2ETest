@@ -16,13 +16,13 @@ jobs:
           }
           EOS)
 
-          RESULT=$(curl -Ssi https://circleci.com/api/v2/project/github/yuta-katayama-23/MobileAppE2ETest/pipeline \
+          RESULT=$(curl https://circleci.com/api/v2/project/github/yuta-katayama-23/MobileAppE2ETest/pipeline \
             --request POST \
             --header "Circle-Token: ${{ secrets.CIRCLE_TOKEN }}" \
             --header "Content-Type: application/json" \
             --data "${JSON}")
 
-          if [[ $RESULT == *"HTTP/1.1 201"* ]]; then
+          if [[ $RESULT !== *"message"* ]]; then
             echo "OK"
             exit 0
           else
