@@ -20,9 +20,11 @@ jobs:
             --request POST \
             --header "Circle-Token: ${{ secrets.CIRCLE_TOKEN }}" \
             --header "Content-Type: application/json" \
-            --data "${JSON}")
+            --data "${JSON}" \
+            | jq.message)
+          echo "$RESULT"
 
-          if [[ $RESULT !== *"message"* ]]; then
+          if [[ $RESULT == "" ]]; then
             echo "OK"
             exit 0
           else
