@@ -1,0 +1,32 @@
+name: android-app-build-and-e2etest
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-e2etest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # - name: Set up JDK 11
+      #   # https://github.com/actions/setup-java
+      #   uses: actions/setup-java@v2
+      #   with:
+      #     java-version: "11"
+      #     distribution: "adopt"
+
+      - name: Check java varsion
+        run: javac --version
+
+      - name: Install node package from dependency
+        run: |
+          cd __e2e__
+          npm ci
+
+      - name: Check environment by appium-doctor
+        run: |
+          cd __e2e__
+          npm run doctor
