@@ -11,16 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # - name: Set up JDK 11
-      #   # https://github.com/actions/setup-java
-      #   uses: actions/setup-java@v2
-      #   with:
-      #     java-version: "11"
-      #     distribution: "adopt"
-
-      - name: Check java varsion
-        run: javac --version
-
       - name: Install node package from dependency
         run: |
           cd __e2e__
@@ -35,3 +25,18 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug
+
+      - name: Create AVD
+        run: |
+          SYSTEM_IMAGES="system-images;android-28;default;x86"
+          sdkmanager "$SYSTEM_IMAGES"
+          echo "no" | avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
+
+      - name: Start android emulator
+        run: emulator -avd test -delay-adb -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+
+      - name: Disable emulator animation
+        run: |
+          adb shell settings put global window_animation_scale 0.0
+          adb shell settings put global transition_animation_scale 0.0
+          adb shell settings put global animator_duration_scale 0.0
