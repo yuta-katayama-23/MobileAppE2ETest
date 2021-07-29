@@ -36,7 +36,7 @@ jobs:
           echo "no" | sudo $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
 
       - name: Start android emulator
-        run: emulator -avd test -delay-adb -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+        run: sudo $ANDROID_HOME/emulator -avd test -delay-adb -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
 
       - name: Disable emulator animation
         run: |
