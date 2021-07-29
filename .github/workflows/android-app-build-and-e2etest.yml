@@ -26,13 +26,15 @@ jobs:
       #     chmod +x gradlew
       #     ./gradlew assembleDebug
 
+      - name: Check that CPU supports hardware virtualization
+        run: egrep -c '（vmx | svm）' / proc / cpuinfo
+
       - name: Install package for KVM and Add user for libvirt and kvm
         run: |
-          sudo apt-get install qemu-kvm libvirt-bin ubuntu-vm-builder bridge-utils ia32-libs-multiarch
-          # sudo apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
-          # sudo adduser `id -un` libvirt
-          # sudo adduser `id -un` kvm
-          # virsh list --all
+          sudo apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
+          sudo adduser `id -un` libvirt
+          sudo adduser `id -un` kvm
+          virsh list --all
 
       # - name: Check KVM acceleration
       #   run: |
@@ -52,7 +54,7 @@ jobs:
 
       - name: Start android emulator
         # https://developer.android.com/studio/run/emulator-commandline
-        run: sudo $ANDROID_HOME/emulator/emulator -avd test -verbose -no-window -no-snapshot -noaudio -no-boot-anim
+        run: sudo $ANDROID_HOME/emulator/emulator -avd test -verbose -no-window -gpu auto -no-snapshot -noaudio -no-boot-anim
 
       # - name: Disable emulator animation
       #   run: |
