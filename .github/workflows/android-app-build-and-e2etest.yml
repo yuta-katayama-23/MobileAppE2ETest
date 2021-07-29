@@ -26,20 +26,26 @@ jobs:
       #     chmod +x gradlew
       #     ./gradlew assembleDebug
 
-      - name: Accept android sdk license
-        run: yes | sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+      # - name: Accept android sdk license
+      #   run: yes | sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
 
-      - name: Create AVD
+      # - name: Create AVD
+      #   run: |
+      #     SYSTEM_IMAGES="system-images;android-28;default;x86"
+      #     sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "$SYSTEM_IMAGES"
+      #     echo "no" | sudo $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
+
+      - name: Download Intel x86 Emulator Accelerator (HAXM installer)
         run: |
-          SYSTEM_IMAGES="system-images;android-28;default;x86"
-          sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "$SYSTEM_IMAGES"
-          echo "no" | sudo $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
+          cd $ANDROID_HOME/extras/android
+          ls -al
 
-      - name: Start android emulator
-        run: sudo $ANDROID_HOME/emulator -avd test -delay-adb -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+      # - name: Start android emulator
+      #   # https://developer.android.com/studio/run/emulator-commandline
+      #   run: sudo $ANDROID_HOME/emulator/emulator -avd test -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
 
-      - name: Disable emulator animation
-        run: |
-          adb shell settings put global window_animation_scale 0.0
-          adb shell settings put global transition_animation_scale 0.0
-          adb shell settings put global animator_duration_scale 0.0
+      # - name: Disable emulator animation
+      #   run: |
+      #     adb shell settings put global window_animation_scale 0.0
+      #     adb shell settings put global transition_animation_scale 0.0
+      #     adb shell settings put global animator_duration_scale 0.0
