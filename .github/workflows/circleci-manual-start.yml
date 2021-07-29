@@ -10,9 +10,9 @@ jobs:
       # https://circleci.com/docs/api/v2/#operation/triggerPipeline
       - name: CircleCiのパイプラインを手動実行
         run: |
-          JSON=$(cat << EOS
+          JSON=$(cat <<- EOS
           {
-            "branch": "main",
+            "branch": "main"
           }
           EOS)
 
@@ -21,12 +21,12 @@ jobs:
             --header "Circle-Token: ${{ secrets.CIRCLE_TOKEN }}" \
             --header "Content-Type: application/json" \
             --data "${JSON}")
-          echo "$RESULT"
 
-          if [[ $RESULT == *"200"* ]]; then
-            echo "good"
+          if [[ $RESULT == *"HTTP/1.1 20"* ]]; then
+            echo "OK"
             exit 0
           else
-            echo "bad"
+            echo "NG"
+            echo "$RESULT"
             exit 1
           fi
