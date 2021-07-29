@@ -18,6 +18,6 @@ jobs:
 
           curl https://circleci.com/api/v2/project/github/yuta-katayama-23/MobileAppE2ETest/pipeline \
             --request POST \
-            --header "Circle-Token: ${{ secrets.CIRCLE_TOKEN }}"
+            --header "Circle-Token: ${{ secrets.CIRCLE_TOKEN }}" \
             --header "Content-Type: application/json" \
             --data "${JSON}"
