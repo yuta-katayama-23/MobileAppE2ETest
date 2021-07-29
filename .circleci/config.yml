@@ -7,9 +7,7 @@ workflows:
 
 jobs:
   build-and-test:
-    # https://circleci.com/docs/ja/2.0/android-machine-image/
-    machine:
-      image: android:202102-01
+    executor: android-test
     steps:
       - checkout
       - install-package
@@ -20,6 +18,12 @@ jobs:
       - wait-boot
       - run-appium
       - execute-test
+
+executors:
+  android-test:
+    # https://circleci.com/docs/ja/2.0/android-machine-image/
+    machine:
+      image: android:202102-01
 
 commands:
   install-package:
