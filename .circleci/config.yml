@@ -1,7 +1,13 @@
 version: 2.1
 
+parameters:
+  manual:
+    type: boolean
+    default: false
+
 workflows:
   moblie-e2e-test:
+    when: << pipeline.parameters.manual >>
     jobs:
       - build-and-test
 
