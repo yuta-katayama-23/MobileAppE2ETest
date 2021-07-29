@@ -27,7 +27,9 @@ jobs:
       #     ./gradlew assembleDebug
 
       - name: Check KVM acceleration
-        run: kvm-ok
+        run: |
+          sudo apt-get install cpu-checker
+          kvm-ok
 
       # - name: Accept android sdk license
       #   run: yes | sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
