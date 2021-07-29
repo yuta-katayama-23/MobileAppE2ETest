@@ -26,7 +26,7 @@ jobs:
             --data "${JSON}" \
             | jq .message)
 
-          if [[ $RESULT == "" ]]; then
+          if [[ $RESULT == null ]]; then
             echo "OK"
             exit 0
           else
