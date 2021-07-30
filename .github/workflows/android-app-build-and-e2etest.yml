@@ -8,6 +8,8 @@ on:
 jobs:
   build-and-e2etest:
     runs-on: macos-latest
+    env:
+      PATH: work/MobileAppE2ETest/MobileAppE2ETest/__e2e__
     steps:
       - uses: actions/checkout@v2
 
@@ -39,7 +41,7 @@ jobs:
         # https://developer.android.com/studio/run/emulator-commandline
         run: |
           mkdir ~/log
-          $ANDROID_HOME/emulator/emulator -avd test -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim >> ~/log/emulator.log &
+          $ANDROID_HOME/emulator/emulator -avd test -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim >> ~/${{ env.PATH }}/emulator.log &
 
       - name: Wait for boot
         run: |
@@ -54,7 +56,7 @@ jobs:
       - name: Start appium server
         run: |
           cd __e2e__
-          npm run s:appium >> ~/log/appium.log &
+          npm run s:appium >> ~/${{ env.PATH }}/appium.log &
 
       - name: Execute e2e test
         run: |
@@ -67,6 +69,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: log
-          path: |
-            ~/log
-            ~/work/MobileAppE2ETest/MobileAppE2ETest/__e2e__/wdio.log
+          path: ~/${{ env.PATH }}/wdio.log
