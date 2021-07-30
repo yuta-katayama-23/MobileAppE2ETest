@@ -43,12 +43,6 @@ describe('Create session and delete session', () => {
             const value = await field.getText();
             expect(value).to.equal("From Emma.");
         });
-
-        it('わざとNGにする', async () => {
-            const field = await client.$("//*[@resource-id=\"com.example.happybirthday:id/textView2\"]");
-            const value = await field.getText();
-            expect(value).to.equal("hoge");
-        });
     })
 
     after(async () => {
