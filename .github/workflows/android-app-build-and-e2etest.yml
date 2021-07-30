@@ -38,11 +38,11 @@ jobs:
       - name: Start android emulator
         # https://developer.android.com/studio/run/emulator-commandline
         run: |
+          mkdir ~/log
           $ANDROID_HOME/emulator/emulator -avd test -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim >> ~/log/emulator.log &
 
       - name: Wait for boot
         run: |
-          adb shell getprop sys.boot_completed
           while [ "`adb shell getprop sys.boot_completed | tr -d '\r'`" != "1" ] ; do sleep 10 && echo "wait for boot"; done
 
       - name: Disable emulator animation
