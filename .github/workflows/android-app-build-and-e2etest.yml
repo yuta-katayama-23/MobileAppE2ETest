@@ -24,6 +24,11 @@ jobs:
       - name: Check VM acceleration
         run: kextstat | grep intel
 
+      - name: Build apk
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
       - name: Create AVD
         run: |
           SYSTEM_IMAGES="system-images;android-28;default;x86"
@@ -33,12 +38,10 @@ jobs:
       - name: Start android emulator
         # https://developer.android.com/studio/run/emulator-commandline
         run: |
-          $ANDROID_HOME/emulator/emulator -avd test -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim &
+          $ANDROID_HOME/emulator/emulator -avd test -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim >> ~/log/emulator.log &
 
-      - name: Build apk
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
+      - name: Wait for boot
+        run: while [ "`adb shell getprop sys.boot_completed | tr -d '\r'`" != "1" ] ; do sleep 1 && echo "wait for boot"; done
 
       - name: Disable emulator animation
         run: |
@@ -49,7 +52,7 @@ jobs:
       - name: Start appium server
         run: |
           cd __e2e__
-          npm run s:appium >> ~/appium.log &
+          npm run s:appium >> ~/log/appium.log &
 
       - name: Execute e2e test
         run: |
@@ -57,8 +60,8 @@ jobs:
           cd __e2e__
           npm run s:test
 
-      - name: Archive appium server log
+      - name: Archive emulator and appium server logs
         uses: actions/upload-artifact@v2
         with:
-          name: appium-server-log
-          path: ~/appium.log
+          name: log
+          path: ~/log
