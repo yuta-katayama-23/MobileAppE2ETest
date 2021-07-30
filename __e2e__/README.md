@@ -131,13 +131,13 @@ node index.js
 
 node の`inspect`オプション × `debugger`を使い、appium client と appium server のセッションがつながっている状態で一時停止させる<br>
 その後、appium desktop を起動し `File > New Session Window... > Attach to Session...タブ > Attach to Sessionボタン` で以下のような画面が表示されるので、ここからロケータを取得する
-![appiumの画面](.gitHub/image/appium.png)
+![appiumの画面](.github/image/appium.png)
 
 （Appium Desktop はかなり重いので画面が表示されるまでに時間がかかる事が多いので注意）
 
 ※この時のポイントとしては、
 
-- newCommandTimeout: 90 に設定する<br>デフォルトでは 60s になっているので、デバッグポイントで一時停止させた後、何も操作をしない（client から server にコマンドを送信しない）と 60 秒で session が切れてしまうため
+- newCommandTimeout: 300 など長い時間に設定する<br>デフォルトでは 60（60 秒） になっているので、デバッグポイントで一時停止させた後、何も操作をしない（client から server にコマンドを送信しない）と 60 秒で session が切れてしまうため
 - --no-timeout に設定する<br>デフォルトでは 2s になっているので、`mocha inspect --no-timeout`のように timeout しないようにしてからテスト実行しないと、appium desktop でロケータ情報などを取得している最中にデバッグが終了してしまう
 
 のようにする事
