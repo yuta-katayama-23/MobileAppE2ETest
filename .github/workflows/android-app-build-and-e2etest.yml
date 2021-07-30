@@ -63,7 +63,10 @@ jobs:
           npm run s:test
 
       - name: Archive emulator and appium server logs
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: log
-          path: ~/log
+          path: |
+            ~/log
+            ~/work/MobileAppE2ETest/MobileAppE2ETest/wdio.log

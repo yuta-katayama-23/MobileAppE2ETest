@@ -125,6 +125,7 @@ node index.js
 参考：[INSTALLATION](https://mochajs.org/#installation)<br>
 参考：[GETTING STARTED](https://mochajs.org/#getting-started)<br>
 参考：[COMMAND-LINE USAGE](https://mochajs.org/#command-line-usage)<br>
+参考：[REPORTERS](https://mochajs.org/#reporters)
 参考：[Expect](https://github.com/Automattic/expect.js)
 
 ## テスト作成方法
@@ -144,7 +145,7 @@ node の`inspect`オプション × `debugger`を使い、appium client と appi
 
 ## 課題
 
-- mocha でテスト実行した時に、mocha の結果と webdriver の log がごっちゃになる
+- ~~mocha でテスト実行した時に、mocha の結果と webdriver の log がごっちゃになる~~<br>webdriverio の log を`outputDir`オプションでディレクトリに出力するようにする<br>参考：[outputDir](https://webdriver.io/docs/options/#outputdir)
 
 ```
 > e2e@1.0.0 s:test C:\Users\user\AndroidStudioProjects\HappyBirthday\__e2e__
