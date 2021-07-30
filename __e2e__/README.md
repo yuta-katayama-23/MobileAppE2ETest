@@ -151,6 +151,38 @@ ex) https://github.com/yuta-katayama-23/MobileAppE2ETest/runs/3191394079?check_s
           path: ~/appium.log
 ```
 
+### emulator が boot するまで待機する
+
+emulator が起動するまでには少し時間がかかり、起動が完了してからテスト実行しないとテストが失敗するので、emulator が起動完了する（boot completed）まで待つ必要がある
+
+emulator が起動完了すると以下のような log が出るが、
+
+```
+emulator: INFO: boot completed
+```
+
+これが出るまで待つには
+
+```
+adb shell getprop init.svc.bootanim
+```
+
+というコマンドを利用すればいい<br>
+実際の実装としては以下のようになる
+
+```
+while [ "`adb shell getprop sys.boot_completed | tr -d '\r'`" != "1" ] ; do sleep 10 && echo "wait for boot..."; done
+```
+
+参考：[Detect when Android emulator is fully booted](https://stackoverflow.com/questions/3634041/detect-when-android-emulator-is-fully-booted)<br>
+参考：[【 tr 】コマンド――テキストファイルの文字を置換する／削除する](https://www.atmarkit.co.jp/ait/articles/1610/03/news017.html)
+
+### 課題
+
+- テストが失敗でも GitHub Actions の job としては成功になっている
+- テストが失敗する事がある（[この job](https://github.com/yuta-katayama-23/MobileAppE2ETest/runs/3192139970?check_suite_focus=true)）
+- ~~（テストが失敗する事があるに関連するかもしれないが）emulator の boot まで待機する処理がない~~<br>~~CircleCi で言うところの`circle-android wait-for-boot`~~<br>→[emulator が boot するまで待機する](###emulatorがbootするまで待機する)で対応
+
 ### トラブルシューティング
 
 #### sdkmanager, avdmanager コマンドの実行
