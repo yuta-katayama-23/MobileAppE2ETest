@@ -89,11 +89,139 @@ webdriverio を用いて appium client から appium server へ接続する部�
 https://appium.io/docs/en/about-appium/getting-started/index.html#running-your-first-test<br>
 `__e2e__/index.js`
 
-### capabilities
+## capabilities
 
 以下を見ると分かる<br>
 今回の`index.js`の各キーの値は以下を参考にしている<br>
 https://appium.io/docs/en/writing-running-appium/caps/index.html
+
+## Mocha を導入
+
+単純に
+
+```js
+// index.js
+async function main() {
+  const client = await wdio.remote(opts);
+
+  const field = await client.$(
+    '//*[@resource-id="com.example.happybirthday:id/textView"]'
+  );
+  const value = await field.getText();
+  assert.strictEqual(value, "Happy Birthday, Sam!");
+
+  await client.deleteSession();
+}
+
+main();
+```
+
+```
+node index.js
+```
+
+でテストを実行すると結果も分かりにくいので [mocha](https://github.com/mochajs/mocha) でテストを見やすく実装しやすくする
+
+参考：[INSTALLATION](https://mochajs.org/#installation)<br>
+参考：[GETTING STARTED](https://mochajs.org/#getting-started)<br>
+参考：[COMMAND-LINE USAGE](https://mochajs.org/#command-line-usage)<br>
+参考：[Expect](https://github.com/Automattic/expect.js)
+
+## テスト作成方法
+
+node の`inspect`オプション × `debugger`を使い、appium client と appium server のセッションがつながっている状態で一時停止させる<br>
+その後、appium desktop を起動し `File > New Session Window... > Attach to Session...タブ > Attach to Sessionボタン` で以下のような画面が表示されるので、ここからロケータを取得する
+![appiumの画面](.gitHub/image/appium.png)
+
+（Appium Desktop はかなり重いので画面が表示されるまでに時間がかかる事が多いので注意）
+
+※この時のポイントとしては、
+
+- newCommandTimeout: 90 に設定する<br>デフォルトでは 60s になっているので、デバッグポイントで一時停止させた後、何も操作をしない（client から server にコマンドを送信しない）と 60 秒で session が切れてしまうため
+- --no-timeout に設定する<br>デフォルトでは 2s になっているので、`mocha inspect --no-timeout`のように timeout しないようにしてからテスト実行しないと、appium desktop でロケータ情報などを取得している最中にデバッグが終了してしまう
+
+のようにする事
+
+## 課題
+
+- mocha でテスト実行した時に、mocha の結果と webdriver の log がごっちゃになる
+
+```
+> e2e@1.0.0 s:test C:\Users\user\AndroidStudioProjects\HappyBirthday\__e2e__
+> mocha --timeout 20s
+
+
+  Happy Birthday App Test
+2021-07-30T07:32:27.849Z INFO webdriver: Initiate new session using the WebDriver protocol
+2021-07-30T07:32:27.981Z INFO webdriver: [POST] http://127.0.0.1:4723/wd/hub/session
+2021-07-30T07:32:27.982Z INFO webdriver: DATA {
+  capabilities: {
+    alwaysMatch: {
+      platformName: 'Android',
+      platformVersion: '9',
+      deviceName: 'Android Emulator',
+      app: 'C:\\Users\\user\\AndroidStudioProjects\\HappyBirthday\\app/build/outputs/apk/debug/app-debug.apk',
+      automationName: 'UiAutomator2',
+      newCommandTimeout: 300
+    },
+    firstMatch: [ {} ]
+  },
+  desiredCapabilities: {
+    platformName: 'Android',
+    platformVersion: '9',
+    deviceName: 'Android Emulator',
+    app: 'C:\\Users\\user\\AndroidStudioProjects\\HappyBirthday\\app/build/outputs/apk/debug/app-debug.apk',
+    automationName: 'UiAutomator2',
+    newCommandTimeout: 300
+  }
+}
+2021-07-30T07:32:40.013Z INFO webdriver: COMMAND findElement("xpath", "//android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[1]/android.view.ViewGroup/android.widget.TextView")
+2021-07-30T07:32:40.015Z INFO webdriver: [POST] http://127.0.0.1:4723/wd/hub/session/27d30517-4d1e-4128-bb9e-733c5dd774d3/element
+2021-07-30T07:32:40.015Z INFO webdriver: DATA {
+  using: 'xpath',
+  value: '//android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[1]/android.view.ViewGroup/android.widget.TextView'
+}
+2021-07-30T07:32:40.255Z INFO webdriver: RESULT {
+  'element-6066-11e4-a52e-4f735466cecf': 'f65a9d48-fff2-40b1-8301-5f11fa307990',
+  ELEMENT: 'f65a9d48-fff2-40b1-8301-5f11fa307990'
+}
+2021-07-30T07:32:40.269Z INFO webdriver: COMMAND getElementText("f65a9d48-fff2-40b1-8301-5f11fa307990")
+2021-07-30T07:32:40.269Z INFO webdriver: [GET] http://127.0.0.1:4723/wd/hub/session/27d30517-4d1e-4128-bb9e-733c5dd774d3/element/f65a9d48-fff2-40b1-8301-5f11fa307990/text
+2021-07-30T07:32:40.303Z INFO webdriver: RESULT Happy Birthday
+    ✔ check title text (294ms)
+2021-07-30T07:32:40.308Z INFO webdriver: COMMAND findElement("xpath", "//*[@resource-id="com.example.happybirthday:id/textView"]")
+2021-07-30T07:32:40.309Z INFO webdriver: [POST] http://127.0.0.1:4723/wd/hub/session/27d30517-4d1e-4128-bb9e-733c5dd774d3/element
+2021-07-30T07:32:40.309Z INFO webdriver: DATA {
+  using: 'xpath',
+  value: '//*[@resource-id="com.example.happybirthday:id/textView"]'
+}
+2021-07-30T07:32:40.379Z INFO webdriver: RESULT {
+  'element-6066-11e4-a52e-4f735466cecf': '0152bc52-dff5-4638-9979-e4689d0f71eb',
+  ELEMENT: '0152bc52-dff5-4638-9979-e4689d0f71eb'
+}
+2021-07-30T07:32:40.387Z INFO webdriver: COMMAND getElementText("0152bc52-dff5-4638-9979-e4689d0f71eb")
+2021-07-30T07:32:40.387Z INFO webdriver: [GET] http://127.0.0.1:4723/wd/hub/session/27d30517-4d1e-4128-bb9e-733c5dd774d3/element/0152bc52-dff5-4638-9979-e4689d0f71eb/text
+2021-07-30T07:32:40.413Z INFO webdriver: RESULT Happy Birthday, Sam!
+    ✔ check message text (109ms)
+2021-07-30T07:32:40.418Z INFO webdriver: COMMAND findElement("xpath", "//*[@resource-id="com.example.happybirthday:id/textView2"]")
+2021-07-30T07:32:40.420Z INFO webdriver: [POST] http://127.0.0.1:4723/wd/hub/session/27d30517-4d1e-4128-bb9e-733c5dd774d3/element
+2021-07-30T07:32:40.420Z INFO webdriver: DATA {
+  using: 'xpath',
+  value: '//*[@resource-id="com.example.happybirthday:id/textView2"]'
+}
+2021-07-30T07:32:40.482Z INFO webdriver: RESULT {
+  'element-6066-11e4-a52e-4f735466cecf': '17f89d91-f14e-47af-aebd-d365a9dfb67d',
+  ELEMENT: '17f89d91-f14e-47af-aebd-d365a9dfb67d'
+}
+2021-07-30T07:32:40.488Z INFO webdriver: COMMAND getElementText("17f89d91-f14e-47af-aebd-d365a9dfb67d")
+2021-07-30T07:32:40.489Z INFO webdriver: [GET] http://127.0.0.1:4723/wd/hub/session/27d30517-4d1e-4128-bb9e-733c5dd774d3/element/17f89d91-f14e-47af-aebd-d365a9dfb67d/text
+2021-07-30T07:32:40.511Z INFO webdriver: RESULT From Emma.
+    ✔ check from text (94ms)
+2021-07-30T07:32:40.512Z INFO webdriver: COMMAND deleteSession()
+2021-07-30T07:32:40.513Z INFO webdriver: [DELETE] http://127.0.0.1:4723/wd/hub/session/27d30517-4d1e-4128-bb9e-733c5dd774d3
+
+  3 passing (14s)
+```
 
 # CI
 
@@ -181,7 +309,7 @@ while [ "`adb shell getprop sys.boot_completed | tr -d '\r'`" != "1" ] ; do slee
 
 - テストが失敗でも GitHub Actions の job としては成功になっている
 - テストが失敗する事がある（[この job](https://github.com/yuta-katayama-23/MobileAppE2ETest/runs/3192139970?check_suite_focus=true)）
-- ~~（テストが失敗する事があるに関連するかもしれないが）emulator の boot まで待機する処理がない~~<br>~~CircleCi で言うところの`circle-android wait-for-boot`~~<br>→[emulator が boot するまで待機する](###emulatorがbootするまで待機する)で対応
+- ~~（テストが失敗する事があるに関連するかもしれないが）emulator の boot まで待機する処理がない~~<br>~~CircleCi で言うところの`circle-android wait-for-boot`~~<br>→[emulator が boot するまで待機する](#emulator-が-boot-するまで待機する)で対応
 
 ### トラブルシューティング
 

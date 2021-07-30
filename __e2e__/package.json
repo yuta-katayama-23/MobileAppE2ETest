@@ -7,15 +7,16 @@
     "doctor": "appium-doctor",
     "s:avd": "emulator @Pixel_3_XL_API_28",
     "s:appium": "appium",
-    "s:debug": "node inspect index.js",
-    "s:test": "node index.js"
+    "s:debug": "mocha inspect --no-timeout",
+    "s:test": "mocha --timeout 20s"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "appium": "^1.21.0",
-    "webdriverio": "^7.8.0",
-    "appium-doctor": "^1.16.0"
+    "appium-doctor": "^1.16.0",
+    "mocha": "^9.0.3",
+    "webdriverio": "^7.8.0"
   }
 }
