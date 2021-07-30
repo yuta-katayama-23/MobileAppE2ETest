@@ -131,7 +131,7 @@ node index.js
 
 node の`inspect`オプション × `debugger`を使い、appium client と appium server のセッションがつながっている状態で一時停止させる<br>
 その後、appium desktop を起動し `File > New Session Window... > Attach to Session...タブ > Attach to Sessionボタン` で以下のような画面が表示されるので、ここからロケータを取得する
-![appiumの画面](.github/image/appium.png)
+![appiumの画面](../.github/image/appium.png)
 
 （Appium Desktop はかなり重いので画面が表示されるまでに時間がかかる事が多いので注意）
 

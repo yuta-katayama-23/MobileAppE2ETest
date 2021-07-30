@@ -1,6 +1,7 @@
 const wdio = require("webdriverio");
 const expect = require("expect.js");
 
+const regex = /__e2e__(\\|\/)test/;
 const opts = {
     path: '/wd/hub',
     port: 4723,
@@ -8,7 +9,7 @@ const opts = {
         platformName: "Android",
         platformVersion: "9", // ここはandroidのemulatorのversion
         deviceName: "Android Emulator",
-        app: `${__dirname.replace("__e2e__\\test", "")}app/build/outputs/apk/debug/app-debug.apk`,
+        app: `${__dirname.replace(regex, "")}app/build/outputs/apk/debug/app-debug.apk`,
         automationName: "UiAutomator2",
         newCommandTimeout: 300 // https://appium.io/docs/en/writing-running-appium/caps/
     }
