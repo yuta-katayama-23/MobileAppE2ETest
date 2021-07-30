@@ -11,23 +11,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install node package from dependency
-        run: |
-          cd __e2e__
-          npm ci
+      # - name: Install node package from dependency
+      #   run: |
+      #     cd __e2e__
+      #     npm ci
 
-      - name: Check environment by appium-doctor
-        run: |
-          cd __e2e__
-          npm run doctor
+      # - name: Check environment by appium-doctor
+      #   run: |
+      #     cd __e2e__
+      #     npm run doctor
 
-      - name: Check VM acceleration
-        run: kextstat | grep intel
+      # - name: Check VM acceleration
+      #   run: kextstat | grep intel
 
-      - name: Build apk
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
+      # - name: Build apk
+      #   run: |
+      #     chmod +x gradlew
+      #     ./gradlew assembleDebug
 
       - name: Create AVD
         run: |
@@ -41,7 +41,9 @@ jobs:
           $ANDROID_HOME/emulator/emulator -avd test -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim >> ~/log/emulator.log &
 
       - name: Wait for boot
-        run: while [ "`adb shell getprop sys.boot_completed | tr -d '\r'`" != "1" ] ; do sleep 1 && echo "wait for boot"; done
+        run: |
+          adb shell getprop sys.boot_completed
+          while [ "`adb shell getprop sys.boot_completed | tr -d '\r'`" != "1" ] ; do sleep 10 && echo "wait for boot"; done
 
       - name: Disable emulator animation
         run: |
