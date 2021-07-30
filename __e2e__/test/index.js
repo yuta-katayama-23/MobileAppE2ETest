@@ -11,9 +11,9 @@ const opts = {
         deviceName: "Android Emulator",
         app: `${__dirname.replace(regex, "")}app/build/outputs/apk/debug/app-debug.apk`,
         automationName: "UiAutomator2",
-        newCommandTimeout: 10 // https://appium.io/docs/en/writing-running-appium/caps/
+        newCommandTimeout: 60 // https://appium.io/docs/en/writing-running-appium/caps/
     },
-    outputDir: `${__dirname.replace(regex, "")}`
+    outputDir: `${__dirname.replace(regex, "")}__e2e__`
 };
 
 describe('Create session and delete session', () => {

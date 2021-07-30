@@ -69,4 +69,4 @@ jobs:
           name: log
           path: |
             ~/log
-            ~/work/MobileAppE2ETest/MobileAppE2ETest/wdio.log
+            ~/work/MobileAppE2ETest/MobileAppE2ETest/__e2e__/wdio.log
