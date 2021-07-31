@@ -1,4 +1,4 @@
-const regex = /__e2e__/;
+const regex = /__e2e__(\\|\/)wedio/;
 const opts = {
     path: '/wd/hub',
     port: 4723,
