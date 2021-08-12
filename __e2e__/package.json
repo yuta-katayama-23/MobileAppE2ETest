@@ -8,7 +8,7 @@
     "s:avd": "emulator @Pixel_3_XL_API_28",
     "s:appium": "appium",
     "s:debug": "mocha inspect --no-timeout",
-    "s:test": "mocha --timeout 30s"
+    "s:test": "mocha --timeout 40s"
   },
   "keywords": [],
   "author": "",

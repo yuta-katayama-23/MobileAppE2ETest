@@ -9,7 +9,7 @@ jobs:
   build-and-e2etest:
     runs-on: macos-latest
     env:
-      LOG_OUTPUT_PATH: work/MobileAppE2ETest/MobileAppE2ETest/__e2e__
+      LOG_OUTPUT_PATH: work/mobile-app-e2e-test/mobile-app-e2e-test/__e2e__
     steps:
       - uses: actions/checkout@v2
 
