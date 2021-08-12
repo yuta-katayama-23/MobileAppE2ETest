@@ -1,4 +1,4 @@
-# MobileAppE2ETest
+# mobile-app-e2e-test
 
 Android アプリの E2E テストを Appium で実装し、CI で自動テストを実行できるようにした PJ
 
@@ -8,5 +8,5 @@ Android アプリの E2E テストを Appium で実装し、CI で自動テス�
 gradlew assembleDebug
 ```
 
-このコマンドですぐにアプリをテストできる APK を作成できる
+このコマンドですぐにアプリをテストできる APK を作成できる<br>
 https://developer.android.com/studio/build/building-cmdline?hl=ja#DebugMode
