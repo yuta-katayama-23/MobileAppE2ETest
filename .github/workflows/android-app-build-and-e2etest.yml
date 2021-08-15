@@ -64,6 +64,9 @@ jobs:
           cd __e2e__
           npm run s:test
 
+      - name: Stop appium server
+        run: killall node
+
       - name: Move webdriverio log to ~/log
         run: mv ~/${{ env.LOG_OUTPUT_PATH }}/wdio.log ~/log
 
